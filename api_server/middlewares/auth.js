@@ -42,7 +42,8 @@ exports.restrictTo = catchAsync(async (req, res, next) => {
     return next(new AppError('No article found with ID', 404));
   }
   const cardOwner = `${JSON.stringify(article.owner)}`;
-  if (userId !== cardOwner && req.user.role === 'user') {
+
+  if (userId !== cardOwner) {
     return next(new AppError('You do not have permission to perform this action', 403));
   }
   return next();
