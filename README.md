@@ -1,4 +1,4 @@
-# [This is REST API  of the programm "NewsExplorer"](https://www.3mak.tk)
+# [This is REST API  of the programm "NewsExplorer"](https://api.www.3mak.tk)
 ***
 ## **Version 1.0.0**
 ***
@@ -30,4 +30,4 @@ Node_modules
 None
 ***
 ## **link**
-<http://3mak.tk>, <https://www.3mak.tk>
+<http://api.3mak.tk>, <https://www.api.3mak.tk>
