@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
+const validate = require('mongoose-validator');
 const userModel = require('./usersModel');
-const validateURL = require('../utils/validateURL');
+
+const urlValidator = [
+  validate({
+    validator: 'isURL',
+    protocols: ['http', 'https', 'ftp'],
+    require_tld: true,
+    require_protocol: true,
+    message: 'Must be a Valid URL',
+  }),
+];
 
 const articleSchema = new mongoose.Schema({
   title: {
@@ -28,7 +38,7 @@ const articleSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now(),
-    //select: false
+    // select: false
   },
   owner: {
     type: mongoose.Schema.ObjectId,
@@ -39,14 +49,14 @@ const articleSchema = new mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    validate: [validateURL, (props) => `${props.value} is not a valid url`],
+    validate: urlValidator,
     required: [true, 'A link to article is necessary'],
   },
   image: {
     type: String,
     trim: true,
     lowercase: true,
-    validate: [validateURL, (props) => `${props.value} is not a valid url`],
+    validate: urlValidator,
     required: [true, 'A link to image is necessary'],
   },
 });

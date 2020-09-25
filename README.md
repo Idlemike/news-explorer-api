@@ -1,6 +1,6 @@
 # [This is REST API  of the programm "NewsExplorer"](https://api.www.3mak.tk)
 ***
-## **Version 1.0.0**
+## **Version 1.0.1**
 ***
 ## **about project**
 It's a diploma project of Yandex-Praktikum

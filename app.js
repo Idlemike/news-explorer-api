@@ -5,20 +5,18 @@ const {
 } = require('celebrate');
 const joiObjectId = require('joi-objectid');
 const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
 const AppError = require('./api_server/utils/appError');
+const { apiLimiter, createAccountLimiter } = require('./api_server/middlewares/rateLimiter');
 const globalErrorHandler = require('./api_server/controllers/errorController');
 const userRouter = require('./api_server/routes/userRoutes');
 const articleRouter = require('./api_server/routes/articleRoutes');
-const { login, createUser } = require('./api_server/controllers/authController');
+const { login, createUser, protect } = require('./api_server/controllers/authController');
 const { requestLogger, errorLogger } = require('./api_server/middlewares/logger');
-
-const auth = require('./api_server/middlewares/auth');
 
 const app = express();
 app.use(BodyParser.json());
@@ -35,13 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Limit requests from same API
-const limiter = rateLimit({
-  max: 1000,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!',
-});
-
-app.use('/', limiter);
+app.use('/', apiLimiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
@@ -66,14 +58,14 @@ app.use((req, res, next) => {
 app.use(requestLogger); // подключаем логгер запросов
 
 // test crash
-/*app.get('/crash-test', () => {
+/* app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-});*/
+}); */
 
 // SIGNUP. selebrate, Joi
-app.post('/signup', celebrate({
+app.post('/signup', createAccountLimiter, celebrate({
   body: Joi.object().keys({
     name: Joi.string().alphanum().required().min(2)
       .max(30),
@@ -91,21 +83,14 @@ app.post('/signin', celebrate({
   }),
 }), login);
 
-// требуем поле авторизации для всех запросов, кроме signin signup
-app.use(celebrate({
-  headers: Joi.object({
-    authorization: Joi.string().required(),
-  }).unknown(),
-}));
-
 // 3) ROUTES
 // USERS
 
-app.use('/users', auth.protect, userRouter);
+app.use('/users', protect, userRouter);
 
 // ARTICLES
 
-app.use('/articles', auth.protect, articleRouter);
+app.use('/articles', protect, articleRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
 

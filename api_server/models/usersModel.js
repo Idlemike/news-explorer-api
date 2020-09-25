@@ -23,7 +23,9 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
   passwordChangedAt: Date,
-  role: { type: String, enum: ['admin', 'user'], default: 'user', select: false },
+  role: {
+    type: String, enum: ['admin', 'user'], default: 'user', select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -31,14 +33,15 @@ userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
-  next();
+  return next();
 });
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword,
 ) {
-  return await bcrypt.compare(candidatePassword, userPassword);
+  const answer = await bcrypt.compare(candidatePassword, userPassword);
+  return answer;
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {

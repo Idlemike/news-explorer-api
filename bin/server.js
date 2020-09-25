@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const mongoConf = require('../api_server/utils/mongoconfig');
 
 process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! Shutting down...');
@@ -10,7 +11,7 @@ process.on('uncaughtException', (err) => {
 dotenv.config({ path: './config.env' });
 const app = require('../app');
 
-const DB = 'mongodb://127.0.0.1:27017/news-explorer-api';
+const { DB } = process.env || mongoConf.DB;
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -19,7 +20,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    /*    console.log(con.connections);*/
+    /* console.log(con.connections); */
     console.log('DB connection successful!');
   })
   .catch((err) => { throw err; });
