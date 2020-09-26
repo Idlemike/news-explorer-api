@@ -1,0 +1,32 @@
+{
+  "env": {
+    "node": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb-base"
+  ],
+  "ignorePatterns": [
+    "/public",
+    "/.git",
+    "node_modules"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "rules": {
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "_id"
+        ]
+      }
+    ]
+  }
+}
