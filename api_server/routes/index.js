@@ -63,7 +63,7 @@ router.get('/users/me', celebrate({
   }),
 }), protect, getUser);
 
-router.delete('articles/:id', celebrate({
+router.delete('/articles/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.objectId(),
   }),
