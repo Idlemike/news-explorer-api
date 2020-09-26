@@ -5,9 +5,9 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const mongoConf = require('../utils/mongoconfig');
 
-const { JWT_SECRET } = process.env || mongoConf.JWT_SECRET;
-const { JWT_EXPIRES_IN } = process.env || mongoConf.JWT_EXPIRES_IN;
-const { JWT_COOKIE_EXPIRES_IN } = process.env || mongoConf.JWT_COOKIE_EXPIRES_IN;
+const { JWT_SECRET = mongoConf.JWT_SECRET} = process.env;
+const { JWT_EXPIRES_IN = mongoConf.JWT_EXPIRES_IN } = process.env;
+const { JWT_COOKIE_EXPIRES_IN = mongoConf.JWT_COOKIE_EXPIRES_IN } = process.env;
 
 const signToken = (id) => jwt.sign({ id }, JWT_SECRET, {
   expiresIn: JWT_EXPIRES_IN,

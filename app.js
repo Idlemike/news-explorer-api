@@ -1,7 +1,7 @@
 const express = require('express');
 const BodyParser = require('body-parser');
 const {
-  celebrate, Joi, errors,
+  Joi, errors,
 } = require('celebrate');
 const joiObjectId = require('joi-objectid');
 const morgan = require('morgan');
@@ -11,11 +11,9 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 
 const AppError = require('./api_server/utils/appError');
-const { apiLimiter, createAccountLimiter } = require('./api_server/middlewares/rateLimiter');
+const { apiLimiter } = require('./api_server/middlewares/rateLimiter');
 const globalErrorHandler = require('./api_server/controllers/errorController');
-const userRouter = require('./api_server/routes/userRoutes');
-const articleRouter = require('./api_server/routes/articleRoutes');
-const { login, createUser, protect } = require('./api_server/controllers/authController');
+const articleRouter = require('./api_server/routes/index');
 const { requestLogger, errorLogger } = require('./api_server/middlewares/logger');
 
 const app = express();
@@ -64,7 +62,7 @@ app.use(requestLogger); // подключаем логгер запросов
   }, 0);
 }); */
 
-// SIGNUP. selebrate, Joi
+/* // SIGNUP. selebrate, Joi
 app.post('/signup', createAccountLimiter, celebrate({
   body: Joi.object().keys({
     name: Joi.string().alphanum().required().min(2)
@@ -81,16 +79,11 @@ app.post('/signin', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
-}), login);
+}), login); */
 
 // 3) ROUTES
-// USERS
 
-app.use('/users', protect, userRouter);
-
-// ARTICLES
-
-app.use('/articles', protect, articleRouter);
+app.use('/', articleRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
 

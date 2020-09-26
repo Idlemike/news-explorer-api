@@ -11,7 +11,7 @@ process.on('uncaughtException', (err) => {
 dotenv.config({ path: './config.env' });
 const app = require('../app');
 
-const { DB } = process.env || mongoConf.DB;
+const { DB = mongoConf.DB } = process.env;
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -24,8 +24,8 @@ mongoose
     console.log('DB connection successful!');
   })
   .catch((err) => { throw err; });
-const port = process.env.PORT || 3010;
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const { PORT = mongoConf.PORT } = process.env;
+const server = app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
 
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! Shutting down...');
