@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const BodyParser = require('body-parser');
 const {
   Joi, errors,
@@ -96,20 +95,32 @@ app.post('/signin', celebrate({
 // });
 /* app.use(cors({credentials: true, origin: 'http://localhost:3000', http://3mak.tk, https://3mak.tk, http://www.3mak.tk, })); */
 
-const whitelist = ['http://127.0.0.1:3000', 'http://127.0.0.1:8080', 'http://3mak.tk', 'https://3mak.tk', 'http://www.3mak.tk', 'https://www.3mak.tk'];
+/* const whitelist = ['http://localhost:3000', 'http://3mak.tk', 'https://3mak.tk', 'http://www.3mak.tk', 'https://www.3mak.tk'];
 const corsOptions = {
   credentials: true,
-  origin(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+  allowedHeaders: 'Access-Control-Allow-Origin',
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-};
+}; */
 
+const allowedCors = [
+  'http://localhost:3000', 'http://3mak.tk', 'https://3mak.tk', 'http://www.3mak.tk', 'https://www.3mak.tk',
+];
+app.use((req, res, next) => {
+  const { origin } = req.headers;
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, PATCH, HEAD, PUT, POST, DELETE');
+  }
+  next();
+});
 // 3) ROUTES
-app.options('*', cors(corsOptions));
 app.use('/', articleRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
