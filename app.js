@@ -96,7 +96,7 @@ app.post('/signin', celebrate({
 // });
 /* app.use(cors({credentials: true, origin: 'http://localhost:3000', http://3mak.tk, https://3mak.tk, http://www.3mak.tk, })); */
 
-const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'http://3mak.tk', 'https://3mak.tk', 'http://www.3mak.tk', 'https://www.3mak.tk'];
+const whitelist = ['http://127.0.0.1:3000', 'http://127.0.0.1:8080', 'http://3mak.tk', 'https://3mak.tk', 'http://www.3mak.tk', 'https://www.3mak.tk'];
 const corsOptions = {
   credentials: true,
   origin(origin, callback) {
@@ -109,7 +109,7 @@ const corsOptions = {
 };
 
 // 3) ROUTES
-app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use('/', articleRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
