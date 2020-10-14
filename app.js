@@ -17,6 +17,7 @@ const articleRouter = require('./api_server/routes/index');
 const { requestLogger, errorLogger } = require('./api_server/middlewares/logger');
 
 const app = express();
+app.use(BodyParser.urlencoded({ extended: false }));
 app.use(BodyParser.json());
 // add joi-objectId to Joi
 Joi.objectId = joiObjectId(Joi);
@@ -81,8 +82,17 @@ app.post('/signin', celebrate({
   }),
 }), login); */
 
+// CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).json({});
+  }
+  return next();
+});
 // 3) ROUTES
-
 app.use('/', articleRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
