@@ -23,7 +23,7 @@ router.post('/signup', createAccountLimiter, celebrate({
     name: Joi.string().alphanum().required().min(2)
       .max(30),
     role: Joi.string().default('user'),
-    email: Joi.string().required().email(),
+    email: Joi.string().required(),
     password: Joi.string().required().pattern(new RegExp('^[a-zA-Z0-9@#$%&]{8,30}$')),
   }),
 }), createUser);
@@ -31,7 +31,7 @@ router.post('/signup', createAccountLimiter, celebrate({
 // SIGNIN. selebrate, Joi
 router.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().required(),
     password: Joi.string().required().min(8),
   }),
 }), login);
