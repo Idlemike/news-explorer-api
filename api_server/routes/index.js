@@ -32,14 +32,14 @@ router.post('/signup', createAccountLimiter, celebrate({
 router.post('/signin', celebrate({
   [Segments.BODY]: Joi.object().keys({
     email: Joi.string().required(),
-    password: Joi.string().required().min(8)
+    password: Joi.string().required().min(8),
   }),
 }), login);
 
 router.route('/articles').get(protect, getArticles);
 
 router.get('/articles/:id', celebrate({
-  [Segments.PARAMS: Joi.object().keys({
+  [Segments.PARAMS]: Joi.object().keys({
     id: Joi.objectId(),
   }),
 }), protect, restrictTo, getArticle);
