@@ -1,5 +1,5 @@
 const express = require('express');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, Segments } = require('celebrate');
 const joiObjectId = require('joi-objectid');
 const {
   getArticles,
@@ -19,7 +19,7 @@ Joi.objectId = joiObjectId(Joi);
 
 // SIGNUP. selebrate, Joi
 router.post('/signup', createAccountLimiter, celebrate({
-  body: Joi.object().keys({
+  [Segments.BODY]: Joi.object().keys({
     name: Joi.string().alphanum().required().min(2)
       .max(30),
     role: Joi.string().default('user'),
@@ -30,22 +30,22 @@ router.post('/signup', createAccountLimiter, celebrate({
 
 // SIGNIN. selebrate, Joi
 router.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string(),
-    password: Joi.string().required().min(8),
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required().min(8)
   }),
 }), login);
 
 router.route('/articles').get(protect, getArticles);
 
 router.get('/articles/:id', celebrate({
-  params: Joi.object().keys({
+  [Segments.PARAMS: Joi.object().keys({
     id: Joi.objectId(),
   }),
 }), protect, restrictTo, getArticle);
 
 router.post('/articles', celebrate({
-  body: Joi.object().keys({
+  [Segments.BODY]: Joi.object().keys({
     keyword: Joi.string().required().min(2).max(30),
     title: Joi.string().required().min(2).max(30),
     text: Joi.string().required().min(2),
@@ -57,14 +57,14 @@ router.post('/articles', celebrate({
 }), protect, postArticle);
 
 router.get('/users/me', celebrate({
-  body: Joi.object().keys({
+  [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required(),
     about: Joi.string().required(),
   }),
 }), protect, getUser);
 
 router.delete('/articles/:id', celebrate({
-  params: Joi.object().keys({
+  [Segments.PARAMS]: Joi.object().keys({
     id: Joi.objectId(),
   }),
 }), protect, restrictTo, deleteArticle);
