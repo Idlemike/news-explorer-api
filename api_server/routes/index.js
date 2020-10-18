@@ -1,4 +1,5 @@
 const express = require('express');
+const BodyParser = require('body-parser');
 const { celebrate, Joi, Segments } = require('celebrate');
 const joiObjectId = require('joi-objectid');
 const {
@@ -15,6 +16,8 @@ const { createAccountLimiter } = require('../middlewares/rateLimiter');
 const { login, createUser, protect } = require('../controllers/authController');
 
 const router = express.Router();
+router.use(BodyParser.urlencoded({ extended: false }));
+router.use(BodyParser.json());
 Joi.objectId = joiObjectId(Joi);
 
 // SIGNUP. selebrate, Joi
