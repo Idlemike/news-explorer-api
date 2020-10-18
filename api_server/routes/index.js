@@ -22,19 +22,19 @@ Joi.objectId = joiObjectId(Joi);
 // SIGNUP. selebrate, Joi
 router.post('/signup', createAccountLimiter, celebrate({
   [Segments.BODY]: Joi.object().keys({
-    name: Joi.string().alphanum().required().min(2)
+    name: Joi.string().alphanum().min(2)
       .max(30),
     role: Joi.string().default('user'),
-    email: Joi.string().required(),
-    password: Joi.string().required().pattern(new RegExp('^[a-zA-Z0-9@#$%&]{8,30}$')),
+    email: Joi.string(),
+    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9@#$%&]{8,30}$')),
   }),
 }), createUser);
 
 // SIGNIN. selebrate, Joi
 router.post('/signin', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().required().min(8),
+    email: Joi.string(),
+    password: Joi.string().min(8),
   }),
 }), login);
 
@@ -48,20 +48,20 @@ router.get('/articles/:id', celebrate({
 
 router.post('/articles', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    keyword: Joi.string().required().min(2).max(30),
-    title: Joi.string().required().min(2).max(30),
-    text: Joi.string().required().min(2),
-    source: Joi.string().required().min(2),
+    keyword: Joi.string().min(2).max(30),
+    title: Joi.string().min(2).max(30),
+    text: Joi.string().min(2),
+    source: Joi.string().min(2),
     date: Joi.date(),
-    link: Joi.string().required().pattern(new RegExp('^(https?|HTTPS?):\\/\\/(www.|WWW.)?((([a-zA-Z0-9-]{1,63}\\.){1,256}[a-zA-Z]{2,6})|((\\d{1,3}\\.){3}\\d{1,3}))(:\\d{2,5})?([-a-zA-Z0-9_\\/.]{0,256}#?)?$')),
-    image: Joi.string().required().pattern(new RegExp('^(https?|HTTPS?):\\/\\/(www.|WWW.)?((([a-zA-Z0-9-]{1,63}\\.){1,256}[a-zA-Z]{2,6})|((\\d{1,3}\\.){3}\\d{1,3}))(:\\d{2,5})?([-a-zA-Z0-9_\\/.]{0,256}#?)?$')),
+    link: Joi.string().pattern(new RegExp('^(https?|HTTPS?):\\/\\/(www.|WWW.)?((([a-zA-Z0-9-]{1,63}\\.){1,256}[a-zA-Z]{2,6})|((\\d{1,3}\\.){3}\\d{1,3}))(:\\d{2,5})?([-a-zA-Z0-9_\\/.]{0,256}#?)?$')),
+    image: Joi.string().pattern(new RegExp('^(https?|HTTPS?):\\/\\/(www.|WWW.)?((([a-zA-Z0-9-]{1,63}\\.){1,256}[a-zA-Z]{2,6})|((\\d{1,3}\\.){3}\\d{1,3}))(:\\d{2,5})?([-a-zA-Z0-9_\\/.]{0,256}#?)?$')),
   }),
 }), protect, postArticle);
 
 router.get('/users/me', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    name: Joi.string().required(),
-    about: Joi.string().required(),
+    name: Joi.string(),
+    about: Joi.string(),
   }),
 }), protect, getUser);
 
