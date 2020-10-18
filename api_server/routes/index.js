@@ -16,7 +16,6 @@ const { createAccountLimiter } = require('../middlewares/rateLimiter');
 const { login, createUser, protect } = require('../controllers/authController');
 
 const router = express.Router();
-router.use(BodyParser.urlencoded({ extended: false }));
 router.use(BodyParser.json());
 Joi.objectId = joiObjectId(Joi);
 
