@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const mongoConf = require('../utils/mongoconfig');
 
-const { JWT_SECRET = mongoConf.JWT_SECRET} = process.env;
+const { JWT_SECRET = mongoConf.JWT_SECRET } = process.env;
 const { JWT_EXPIRES_IN = mongoConf.JWT_EXPIRES_IN } = process.env;
 const { JWT_COOKIE_EXPIRES_IN = mongoConf.JWT_COOKIE_EXPIRES_IN } = process.env;
 
