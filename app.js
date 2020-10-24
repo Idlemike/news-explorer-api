@@ -108,7 +108,7 @@ const corsOptions = {
   },
 }; */
 
-const allowedCors = [
+/* const allowedCors = [
   'http://localhost:3000', 'http://3mak.tk', 'https://3mak.tk', 'http://www.3mak.tk', 'https://www.3mak.tk',
 ];
 app.use((req, res, next) => {
@@ -119,7 +119,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, PATCH, HEAD, PUT, POST, DELETE');
   }
   next();
-});
+}); */
 // 3) ROUTES
 app.use('/', articleRouter);
 
