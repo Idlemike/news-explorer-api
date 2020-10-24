@@ -55,7 +55,7 @@ const createSendToken = (user, statusCode, res) => {
 
   res.cookie('jwt', token, cookieOptions);
 
-  // Remove password from output
+  /*  // Remove password from output
   userDev.password = undefined;
 
   res.status(statusCode).json({
@@ -63,7 +63,9 @@ const createSendToken = (user, statusCode, res) => {
     data: {
       userDev,
     },
-  });
+  }); */
+  // вернём токен
+  res.send({ token });
 };
 
 exports.createUser = catchAsync(async (req, res, next) => {
