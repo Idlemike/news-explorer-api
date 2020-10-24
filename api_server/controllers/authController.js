@@ -65,7 +65,7 @@ const createSendToken = (user, statusCode, res) => {
     },
   }); */
   // вернём токен
-  res.send({ token });
+  res.status(statusCode.json({ data: { token, userDev }});
 };
 
 exports.createUser = catchAsync(async (req, res, next) => {
