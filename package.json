@@ -51,7 +51,7 @@
     "mongoose": "^5.10.6",
     "mongoose-validator": "^2.1.0",
     "morgan": "^1.10.0",
-    "validator": "^13.1.17",
+    "validator": "^13.7.0",
     "winston": "^3.3.3",
     "xss-clean": "^0.1.1"
   },
